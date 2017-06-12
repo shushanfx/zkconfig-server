@@ -1,0 +1,11 @@
+zookeeper:
+  servers: 127.0.0.1:2181
+  path: /zkconfig/config
+  connectTimeout: 30000
+spring:
+  freemarker:
+    settings:
+      dateFormat: yyyy-MM-dd
+      timeFormat: HH:mm:ss
+      datetimeFormat: yyyy-MM-dd HH:mm:ss
+    request-context-attribute: request
