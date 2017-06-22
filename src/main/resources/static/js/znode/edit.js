@@ -4,22 +4,33 @@ $(function(){
         onSubmit();
     });
 
-    function showMessage(isSuccess, message){
+    function showMessage(isSuccess, message) {
         var $msg = $("#divMessage");
-
-        if(isSuccess){
+        var timer = $msg.data("timer");
+        if($msg.length == 0){
+            return ;
+        }
+        if (timer) {
+            clearTimeout(timer);
+        }
+        if (isSuccess) {
             $msg.children("div").html('<strong>Well done! </strong>' + message);
             $msg.addClass("alert-success").removeClass("alert-warning");
         }
-        else{
+        else {
             $msg.children("div").html("<string>Warning! </string>" + message);
             $msg.addClass("alert-warning").removeClass("alert-success");
         }
         $msg.show();
-        $msg.find("button").unbind("click").bind("click", function(){
+        $msg.find("button").unbind("click").bind("click", function () {
             $("#divGroup").hide();
         });
         $("#divGroup").show();
+        timer = setTimeout(function () {
+            $("#divGroup").hide();
+            $msg.data("timer", "");
+        }, 3000);
+        $msg.data("timer", timer);
     }
 
     function onSubmit(){
@@ -29,13 +40,14 @@ $(function(){
         if(check(name, description)){
             $.post(zkconfig.getPath("/znode/save/info"), {
                 name: name,
-                description: description
+                description: description,
+                type: $("#sltType").val()
             }, function(result){
                 showMessage(true, "操作成功");
             })
         }
         else{
-            showMessage(false, "请输入正确的参数！");
+            showMessage(false, "请输入正确的参数！(名称必须满足[a-zA-Z0-9-])");
         }
     }
     function check(name, description){

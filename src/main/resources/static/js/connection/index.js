@@ -1,5 +1,6 @@
 $(function(){
-    var $name = $("#txtName"),
+    var $txtPath = $("#txtPath"),
+        $txtIP = $("#txtIP"),
         $table = $("#tblList"),
         $btnSearch = $("#btnSearch");
 
@@ -9,8 +10,10 @@ $(function(){
     });
 
     function doSearch(){
-        var value = $.trim($name.val());
-        $.get("list", {name: value}, function(result){
+        $.get("list", {
+            path: $.trim($txtPath.val()),
+            ip: $.trim($txtIP.val())
+        }, function(result){
             onHandleResult(result);
         });
     }
@@ -72,71 +75,22 @@ $(function(){
             $.each(data.data, function(index, item){
                 html.push('<tr>');
 
-                html.push('<td>', item.name, '</td>');
-                html.push('<td>', item.type || "properties", '</td>');
-                html.push('<td>', item.sizeString || "EMPTY", '</td>');
-                html.push('<td>', item.description, '</td>');
-                html.push('<td>', item.creator, '</td>');
-                html.push('<td>', getFriendlyTime(item.createdTime), '</td>');
-                html.push('<td>', item.modifier, '</td>');
-                html.push('<td>', getFriendlyTime(item.modifiedTime), '</td>');
-                html.push('<td>', getOptions(item), '</td>');
-
+                html.push('<td>', item.id, '</td>');
+                html.push('<td>', item.path, '</td>');
+                html.push('<td>', getFriendlyTime(item.connectedTime), '</td>');
+                html.push('<td>', item.ip, '</td>');
                 html.push('</tr>');
             });
             $table.append(html.join(""));
-            $table.find(".btn.delete").on("click", function(e){
-                var href = $(this).attr("href");
-                var $tr = $(this).parents("tr");
-                showDialog("提示", "你确定要删除?", function(){
-                    var $dialog = this;
-                    $.post(href, function(result){
-                        $dialog.modal("hide");
-                        $tr.hide("slow", function(){
-                            doSearch();
-                        })
-                    });
-                });
-                e.preventDefault();
-            })
         }
         else{
             $table.append('<tr> \
-                <td colspan="9"> \
+                <td colspan="7"> \
                     <div style="height: 200px; text-align: center; padding-top: 50px;">No Data</div> \
                 </td> \
             </tr>');
         }
     }
-
-    function showDialog(title, message, callback){
-        var id = "my" + Date.now();
-        var html = '<div class="modal fade" id="' + id + '" tabindex="-1" role="dialog" ' +
-            'aria-labelledby="myModalLabel" aria-hidden="true"> \
-            <div class="modal-dialog"> \
-                <div class="modal-content"> \
-                <div class="modal-header"> \
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> \
-                    <h4 class="modal-title" id="myModalLabel">' + title + '</h4> \
-                </div> \
-                <div class="modal-body">' + message + '</div> \
-                <div class="modal-footer">\
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>\
-                    <button type="button" class="btn btn-primary">确定</button>\
-                </div>\
-                </div>\
-            </div>\
-        </div>';
-
-        $("body").append(html);
-        var $dialog = $("#" + id).modal({
-            keyboard: true
-        });
-        $dialog.find(".btn-primary").on("click", function(){
-            callback && callback.call($dialog);
-        });
-    }
-
     setTimeout(function () {
         doSearch();
     }, 10);

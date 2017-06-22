@@ -9,6 +9,8 @@ public class ZNode {
     private String name;
     private String content;
     private String description;
+    private String type = "properties";
+    private int size = 0;
 
     private String creator = null;
     private Date createdTime = null;
@@ -71,5 +73,38 @@ public class ZNode {
         this.modifiedTime = modifiedTime;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public String getSizeString(){
+        if(size <= 0){
+            return "EMPTY";
+        }
+        else if(size < 1024){
+            return String.format("%db", size);
+        }
+        else if(size < 1024 * 1024){
+            return String.format("%.2fk", size / 1024.0);
+        }
+        else if(size < 1024 * 1024 * 1024){
+            return String.format("%.2fM", size / 1024.0 / 1024.0);
+        }
+        else if(size < 1024 * 1024 * 1024 * 1024){
+            return String.format("%.2fG", size / 1024.0 / 1024.0 / 1024.0);
+        }
+        return "TOO LARGE";
+    }
 }

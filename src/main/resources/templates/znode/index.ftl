@@ -6,26 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">ZConfig配置中心</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="${base}/znode/index">配置列表</a></li>
-                    <li><a href="${base}/connect/index">连接列表</a></li>
-                    <li><a href="${base}/index">关于</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-    </nav>
+    <#include "../include/menu.ftl" />
     <form class="form-horizontal form-inline" onsubmit="return false">
         <div class="form-group" style="margin-left: 0; margin-right:0; margin-bottom: 10px;">
             <span>Filter：</span>
@@ -37,16 +18,20 @@
     <div id="divList">
         <table class="table table-striped" id="tblList">
             <colgroup>
-                <col width="15%">
-                <col width="30%">
                 <col width="10%">
                 <col width="10%">
                 <col width="10%">
+                <col width="20%">
+                <col width="5%">
                 <col width="10%">
-                <col width="15%">
+                <col width="5%">
+                <col width="10%">
+                <col width="20%">
             </colgroup>
             <tr>
-                <th>Name</th>
+                <th>名称</th>
+                <th>内容大小</th>
+                <th>数据类型</th>
                 <th>描述</th>
                 <th>创建人</th>
                 <th>创建时间</th>
@@ -55,7 +40,7 @@
                 <th>操作</th>
             </tr>
             <tr>
-                <td colspan="7">
+                <td colspan="9">
                     <div style="height: 200px; text-align: center; padding-top: 50px;">Loading...</div>
                 </td>
             </tr>

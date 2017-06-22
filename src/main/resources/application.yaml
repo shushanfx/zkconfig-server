@@ -1,7 +1,11 @@
 zookeeper:
-  servers: 127.0.0.1:2181
-  path: /zkconfig/config
+  servers: zookeeper-zookeeper-dev004-whdx.qiyi.virtual:2181
+  path: /frontweb_proxy_test/zkconfig/config
   connectTimeout: 30000
+  connectionPath: /frontweb_proxy_test/zkconfig/connection
+  scheme: digest
+  username: frontweb_proxy_test
+  password: frontweb_proxy_test
 spring:
   freemarker:
     settings:

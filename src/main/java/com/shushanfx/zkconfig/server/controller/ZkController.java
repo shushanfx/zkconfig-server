@@ -29,8 +29,10 @@ public class ZkController {
 
     @RequestMapping("/save/info")
     @ResponseBody
-    public ResultInfo saveInfo(String name, String description, @RequestParam(defaultValue = "shushanfx") String username){
-        client.saveInfo(name, description, username);
+    public ResultInfo saveInfo(String name, String description,
+                               @RequestParam(defaultValue = "properties") String type,
+                               @RequestParam(defaultValue = "shushanfx") String username){
+        client.saveInfo(name, description, type, username);
         return ResultInfo.newSuccess();
     }
 

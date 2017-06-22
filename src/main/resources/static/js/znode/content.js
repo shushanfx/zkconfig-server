@@ -1,45 +1,69 @@
-$(function(){
-    $("#btnSubmit").on("click", function(e){
+$(function () {
+    var MAP = {
+        "json": "javascript"
+    };
+    var type = $("#txtName").attr("data-type");
+    var myCodeMirror = CodeMirror.fromTextArea($("#txtContent").get(0), {
+        mode: MAP[type] ? MAP[type] : type,
+        lineWrapping: true,
+        lineNumbers: true
+    });
+
+    $("#btnSubmit").on("click", function (e) {
         e.preventDefault();
         onSubmit();
     });
 
-    function showMessage(isSuccess, message){
+    function showMessage(isSuccess, message) {
         var $msg = $("#divMessage");
-
-        if(isSuccess){
+        var timer = $msg.data("timer");
+        if($msg.length == 0){
+            return ;
+        }
+        if (timer) {
+            clearTimeout(timer);
+        }
+        if (isSuccess) {
             $msg.children("div").html('<strong>Well done! </strong>' + message);
             $msg.addClass("alert-success").removeClass("alert-warning");
         }
-        else{
+        else {
             $msg.children("div").html("<string>Warning! </string>" + message);
             $msg.addClass("alert-warning").removeClass("alert-success");
         }
         $msg.show();
-        $msg.find("button").unbind("click").bind("click", function(){
+        $msg.find("button").unbind("click").bind("click", function () {
             $("#divGroup").hide();
-        })
+        });
         $("#divGroup").show();
+        timer = setTimeout(function () {
+            $("#divGroup").hide();
+            $msg.data("timer", "");
+        }, 3000);
+        $msg.data("timer", timer);
     }
 
-    function onSubmit(){
+    function onSubmit() {
+        // save the value.
+        myCodeMirror.save();
         var name = $.trim($("#txtName").val());
         var content = $("#txtContent").val();
-        if(check(name, content)){
-            $.post("../../save/content", {
+        if (check(name, content)) {
+            $.post(zkconfig.getPath("/znode/save/content"), {
                 name: name,
                 content: content
-            }, function(result){
+            }, function (result) {
                 showMessage(true, "操作成功");
             })
         }
-        else{
+        else {
             showMessage(false, "请输入正确的参数！");
         }
     }
-    function check(name, description){
+
+    function check(name, description) {
         var reg = /[a-z0-9A-Z_-]+/gi;
-        if(name && name.match(reg)){
+        if (name && name.match(reg)) {
             return true;
         }
         return false;

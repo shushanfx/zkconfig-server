@@ -2,30 +2,33 @@
 <html lang="zh">
 <head>
 <#include "../include/header.ftl" />
+    <link rel="stylesheet" type="text/css" href="${base}/plugin/codemirror/codemirror.5.26.0.min.css">
+    <script type="text/javascript" src="${base}/plugin/codemirror/codemirror.5.26.0.min.js"></script>
+    <#if "${(node.type)!}" == "json">
+        <script type="text/javascript" src="${base}/plugin/codemirror/javascript.5.26.0.min.js"></script>
+    <#elseif "${(node.type)!}" == "yaml">
+        <script type="text/javascript" src="${base}/plugin/codemirror/yaml.5.26.0.min.js"></script>
+    <#else>
+        <script type="text/javascript" src="${base}/plugin/codemirror/properties.5.26.0.min.js"></script>
+    </#if>
     <title>编辑内容【${name}】</title>
+    <style>
+        .CodeMirror{
+            padding: 6px 12px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">ZConfig配置中心</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="${base}/znode/index">配置列表</a></li>
-                    <li><a href="${base}/connect/index">连接列表</a></li>
-                    <li><a href="${base}/index">关于</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-    </nav>
+    <#include "../include/menu.ftl" />
     <form class="form-horizontal">
         <div class="form-group" id="divGroup" style="display:none;">
             <div class="col-sm-offset-2 col-sm-10">
@@ -36,13 +39,21 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">名称(*)：</label>
             <div class="col-sm-10">
-                <input type="text" value="${name!}" class="form-control" id="txtName" placeholder="Name" disabled>
+                <input type="text" value="${name!}" class="form-control" id="txtName" placeholder="Name" disabled data-type="${(node.type)!'properties'}">
             </div>
         </div>
         <div class="form-group">
-            <label for="inputPassword3" class="col-sm-2 control-label">content</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">数据类型(*)：</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="sltType" name="type" <#if "${(node.name)!}" != "">disabled="disabled"</#if>>
+                    <option value="${node.type}" selected="selected">${node.type}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">content:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="txtContent" rows="16">${(node.content)!}</textarea>
             </div>

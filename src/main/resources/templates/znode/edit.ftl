@@ -6,26 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">ZConfig配置中心</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="${base}/znode/index">配置列表</a></li>
-                    <li><a href="${base}/connect/index">连接列表</a></li>
-                    <li><a href="${base}/index">关于</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-    </nav>
+    <#include "../include/menu.ftl" />
     <form class="form-horizontal">
         <div class="form-group" id="divGroup" style="display:none;">
             <div class="col-sm-offset-2 col-sm-10">
@@ -36,15 +17,25 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="inputEmail3" class="col-sm-2 control-label">Name</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">名称(*)：</label>
             <div class="col-sm-10">
-                <input type="text" value="${(node.name)!}" class="form-control" id="txtName" placeholder="Name">
+                <input type="text" value="${(node.name)!}" class="form-control" id="txtName" placeholder="配置的名称" <#if "${(node.name)!}" != "">disabled="disabled"</#if>>
             </div>
         </div>
         <div class="form-group">
-            <label for="inputPassword3" class="col-sm-2 control-label">description</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">数据类型(*)：</label>
             <div class="col-sm-10">
-                <textarea class="form-control" id="txtDescription" rows="3">${(node.description)!}</textarea>
+                <select class="form-control" id="sltType" name="type" <#if "${(node.name)!}" != "">disabled="disabled"</#if>>
+                    <#list ["properties", "json", "yaml"] as item>
+                        <option value="${item}" <#if item=="${(node.type)!}">selected="selected"</#if>>${item}</option>
+                    </#list>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">描述：</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="txtDescription" rows="3" placeholder="配置的描述信息">${(node.description)!}</textarea>
             </div>
         </div>
         <div class="form-group">
