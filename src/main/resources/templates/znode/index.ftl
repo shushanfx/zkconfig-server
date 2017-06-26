@@ -30,8 +30,8 @@
             </colgroup>
             <tr>
                 <th>名称</th>
-                <th>内容大小</th>
                 <th>数据类型</th>
+                <th>内容大小</th>
                 <th>描述</th>
                 <th>创建人</th>
                 <th>创建时间</th>

@@ -37,6 +37,7 @@ public class ZNodeClient {
     public void init() {
         log.info(String.format("Init zookeeper server %s, timeout -> %d, path -> %s", servers, connectTimeout, path));
         client = new ZkClient(servers, connectTimeout);
+        client.setZkSerializer(new ZNodeSerializer());
         if (username != null) {
             log.info(String.format("Auth zookeeper with %s:%s", username, password));
             client.addAuthInfo(scheme, (username + ":" + password).getBytes());
@@ -45,7 +46,7 @@ public class ZNodeClient {
             client.createPersistent(this.path, true);
         }
         if (!client.exists(connectionPath)) {
-            client.createPersistent(this.path, true);
+            client.createPersistent(this.connectionPath, true);
         }
     }
 
@@ -83,8 +84,7 @@ public class ZNodeClient {
 
     public List<ZConnection> getConnectionList(String path, String ip) {
         List<ZConnection> connections = new ArrayList<>();
-
-        if (connectionPath != null) {
+        if (connectionPath != null && client.exists(connectionPath)) {
             List<String> items = client.getChildren(connectionPath);
             for (String item : items) {
                 String value = client.readData(join(connectionPath, item));

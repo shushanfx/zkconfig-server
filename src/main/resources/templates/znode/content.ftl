@@ -48,7 +48,7 @@
             <label for="inputEmail3" class="col-sm-2 control-label">数据类型(*)：</label>
             <div class="col-sm-10">
                 <select class="form-control" id="sltType" name="type" <#if "${(node.name)!}" != "">disabled="disabled"</#if>>
-                    <option value="${node.type}" selected="selected">${node.type}</option>
+                    <option value="${node.type}" selected="selected">${node.type!}</option>
                 </select>
             </div>
         </div>
