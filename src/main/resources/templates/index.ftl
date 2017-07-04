@@ -8,7 +8,7 @@
 <div class="container">
     <#include "include/menu.ftl" />
     <div class="jumbotron">
-        <h1><ZConfig管理中心</h1>
+        <h1><ZKConfig管理中心</h1>
         <p>这是一个基于zookeeper的配置管理中心，可以进行配置和连接管理。</p>
         <p>This is a config manage system based on zookeeper. It includes config settings and connection management.</p>
         <p>

@@ -7,12 +7,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${base}/index">ZConfig配置中心</a>
+            <a class="navbar-brand" href="${base}/index">ZKConfig管理中心</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="${base}/znode/index">配置列表</a></li>
-                <li><a href="${base}/connection/index">连接列表</a></li>
+                <li><a href="${base}/znode/index">配置管理</a></li>
+                <li><a href="${base}/connection/index">连接管理</a></li>
                 <li><a href="${base}/index">关于</a></li>
             </ul>
         </div>

@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <#include "../include/header.ftl" />
-    <title>客户端列表</title>
+    <title>连接管理</title>
 </head>
 <body>
 <div class="container">

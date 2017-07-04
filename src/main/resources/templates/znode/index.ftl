@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <#include "../include/header.ftl" />
-    <title>配置信心管理</title>
+    <title>配置管理</title>
 </head>
 <body>
 <div class="container">
