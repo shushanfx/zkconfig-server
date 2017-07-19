@@ -1,11 +1,20 @@
 zookeeper:
-  servers: zookeeper-zookeeper-dev004-whdx.qiyi.virtual:2181
-  path: /frontweb_proxy_test/zkconfig/config
+  servers: 10.110.28.204:2181
+  path: /zkconfig/config
   connectTimeout: 30000
-  connectionPath: /frontweb_proxy_test/zkconfig/connection
+  connectionPath: /zkconfig/connection
   scheme: digest
-  username: frontweb_proxy_test
-  password: frontweb_proxy_test
+  username: zkconfig
+  password: zkconfig
+zkconfig:
+  typeList:
+    - properties
+    - json
+    - yaml
+  contentDefault:
+    properties: "#java properties format, such as:\n#key=value"
+    json: "{\n\t\"key\":\"value\"\n}"
+    yaml: "# yaml format config, such as: \n#root:\n#  key: value"
 spring:
   freemarker:
     settings:
