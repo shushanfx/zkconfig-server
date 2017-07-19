@@ -1,5 +1,7 @@
 package com.shushanfx.zkconfig.server.zookeeper;
 
+import com.shushanfx.zkconfig.server.util.SizeUtils;
+
 import java.util.Date;
 
 /**
@@ -90,21 +92,6 @@ public class ZNode {
     }
 
     public String getSizeString(){
-        if(size <= 0){
-            return "EMPTY";
-        }
-        else if(size < 1024){
-            return String.format("%db", size);
-        }
-        else if(size < 1024 * 1024){
-            return String.format("%.2fk", size / 1024.0);
-        }
-        else if(size < 1024 * 1024 * 1024){
-            return String.format("%.2fM", size / 1024.0 / 1024.0);
-        }
-        else if(size < 1024 * 1024 * 1024 * 1024){
-            return String.format("%.2fG", size / 1024.0 / 1024.0 / 1024.0);
-        }
-        return "TOO LARGE";
+        return SizeUtils.getSizeString(this.size);
     }
 }

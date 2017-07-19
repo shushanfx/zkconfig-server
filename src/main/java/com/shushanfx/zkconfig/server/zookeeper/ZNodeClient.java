@@ -1,10 +1,12 @@
 package com.shushanfx.zkconfig.server.zookeeper;
 
+import com.shushanfx.zkconfig.server.bean.ZkConfiguration;
 import com.shushanfx.zkconfig.server.util.JSONUtils;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.zookeeper.data.Stat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -14,6 +16,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by shushanfx on 17/六月/11.
@@ -21,7 +24,11 @@ import java.util.List;
 @Service
 @ConfigurationProperties(prefix = "zookeeper")
 public class ZNodeClient {
+    public static final String HISTORY_PATH = "_history";
     private static final Log log = LogFactory.getLog(ZNodeClient.class);
+
+    @Autowired
+    private ZkConfiguration zkConfiguration = null;
 
     private int connectTimeout = 30000;
     private String servers = null;
@@ -213,7 +220,8 @@ public class ZNodeClient {
                             String username) {
         String newPath = join(this.path, name);
         if (!client.exists(newPath)) {
-            client.createPersistent(newPath);
+            String contentDefault = zkConfiguration.getDefaultContent(type);
+            client.createPersistent(newPath, contentDefault);
             client.createPersistent(join(newPath, "type"), type);
             client.createPersistent(join(newPath, "description"), description);
             client.createPersistent(join(newPath, "creator"), username);
@@ -230,10 +238,94 @@ public class ZNodeClient {
     public boolean saveContent(String name, String content, String username) {
         String newPath = join(this.path, name);
         if (client.exists(newPath)) {
-            client.writeData(newPath, content);
+            String oldContent = client.readData(newPath, true);
+            if (oldContent != null && content != null) {
+                if(!oldContent.equals(content)){
+                    // 变化才保存，并保留就的历史记录
+                    client.writeData(newPath, content);
+                    saveOrUpdate(join(newPath, "modifier"), username);
+                    saveHistory(name, oldContent, username);
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean saveContentFromHistory(String name, String id, String username) {
+        String newPath = join(this.path, name);
+        String newPath2 = join(this.path, name, HISTORY_PATH, id);
+        Object value = client.readData(newPath2, true);
+        if (value != null) {
+            client.writeData(newPath, value);
             saveOrUpdate(join(newPath, "modifier"), username);
         }
         return true;
+    }
+
+    public boolean saveHistory(String name, String content, String username) {
+        String _id = UUID.randomUUID().toString();
+        String newPath = join(this.path, name, HISTORY_PATH);
+        if (!client.exists(newPath)) {
+            client.createPersistent(newPath, true);
+        }
+        String newPath2 = join(newPath, _id);
+        client.createPersistent(newPath2, content);
+        client.createPersistent(join(newPath2, "modifier"), username);
+        return true;
+    }
+
+    public boolean deleteHistory(String name, String id) {
+        String newPath = join(this.path, name, HISTORY_PATH, id);
+        if (client.exists(newPath)) {
+            client.deleteRecursive(newPath);
+        }
+        return true;
+    }
+
+    public List<ZHistory> listHistory(String name) {
+        List<ZHistory> list = new ArrayList<>();
+        String newPath = join(this.path, name, HISTORY_PATH);
+
+        if (client.exists(newPath)) {
+            List<String> children = client.getChildren(newPath);
+            for (String item : children) {
+                ZHistory history = getHistory(name, item, false);
+                if (history != null) {
+                    list.add(history);
+                }
+            }
+            list.sort((a, b) -> (int) (b.getCreatedTime() - a.getCreatedTime()));
+        }
+
+
+        return list;
+    }
+
+    public ZHistory getHistory(String name, String id) {
+        return getHistory(name, id, true);
+    }
+
+    private ZHistory getHistory(String name, String id, boolean isCheck) {
+        String path = join(this.path, name, HISTORY_PATH, id);
+        if (isCheck && !client.exists(path)) {
+            return null;
+        }
+        ZHistory history = new ZHistory();
+        history.setName(name);
+        history.setId(id);
+
+        Stat stat = new Stat();
+        Object value = client.readData(path, stat);
+        if (value != null) {
+            history.setContent(value.toString());
+        }
+        history.setCreatedTime(stat.getCtime());
+        history.setSize(stat.getDataLength());
+        value = client.readData(join(path, "modifier"), true);
+        if (value != null) {
+            history.setUsername(value.toString());
+        }
+        return history;
     }
 
     public boolean delete(String name) {

@@ -16,7 +16,7 @@
         </div>
     </form>
     <div id="divList">
-        <table class="table table-striped" id="tblList">
+        <table class="table table-striped table-condensed" id="tblList">
             <colgroup>
                 <col width="10%">
                 <col width="10%">

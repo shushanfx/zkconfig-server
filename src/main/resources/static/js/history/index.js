@@ -1,16 +1,15 @@
 $(function(){
-    var $name = $("#txtName"),
-        $table = $("#tblList"),
-        $btnSearch = $("#btnSearch");
+    var $table = $("#tblList"),
+        $name = $("#txtName");
 
-    $btnSearch.on("click", function(e){
-        e.preventDefault();
+    $("#btnSearch").on("click", function(e){
         doSearch();
+        e.preventDefault();
     });
 
     function doSearch(){
         var value = $.trim($name.val());
-        $.get("list", {name: value}, function(result){
+        $.get("list/" + value, function(result){
             onHandleResult(result);
         });
     }
@@ -54,12 +53,8 @@ $(function(){
     function onHandleResult(data){
         var getOptions = function(item){
             var arr = [];
-
-            arr.push('<a class="btn btn-primary btn-sm my-btn" href="edit/info/', item.name, '">编辑</a>');
-            arr.push('<a class="btn btn-primary btn-sm my-btn" href="edit/content/', item.name, '">编辑内容</a>');
-            arr.push('<a class="btn btn-primary btn-sm my-btn" href="history/', item.name, '">版本</a>');
-            arr.push('<a class="btn btn-danger btn-sm my-btn delete" target="_blank" href="delete/', item.name, '">删除</a>')
-
+            arr.push('<a class="btn btn-primary btn-sm my-btn" href="view/', item.name , '/', item.id, '">查看</a>');
+            arr.push('<a class="btn btn-danger btn-sm my-btn delete" target="_blank" href="delete/', item.name, '/', item.id, '">删除</a>')
             return arr.join("");
         };
 
@@ -72,17 +67,12 @@ $(function(){
             var html = [];
             $.each(data.data, function(index, item){
                 html.push('<tr>');
-
                 html.push('<td>', item.name, '</td>');
-                html.push('<td>', item.type || "properties", '</td>');
+                html.push('<td>', item.id, '</td>');
                 html.push('<td>', item.sizeString || "EMPTY", '</td>');
-                html.push('<td>', item.description, '</td>');
-                html.push('<td>', item.creator, '</td>');
+                html.push('<td>', item.username, '</td>');
                 html.push('<td>', getFriendlyTime(item.createdTime), '</td>');
-                html.push('<td>', item.modifier, '</td>');
-                html.push('<td>', getFriendlyTime(item.modifiedTime), '</td>');
                 html.push('<td>', getOptions(item), '</td>');
-
                 html.push('</tr>');
             });
             $table.append(html.join(""));
