@@ -3,7 +3,7 @@ package com.shushanfx.zkconfig.server.zookeeper;
 import com.shushanfx.zkconfig.server.util.SizeUtils;
 
 /**
- * Created by dengjianxin on 2017/6/20.
+ * Created by shushanfx on 2017/6/20.
  */
 public class ZHistory {
     private String id = null;

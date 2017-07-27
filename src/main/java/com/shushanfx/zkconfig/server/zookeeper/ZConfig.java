@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by shushanfx on 17/六月/11.
  */
-public class ZNode {
+public class ZConfig {
     private String name;
     private String content;
     private String description;

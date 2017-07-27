@@ -1,7 +1,7 @@
 package com.shushanfx.zkconfig.server.zookeeper;
 
 /**
- * Created by dengjianxin on 2017/6/13.
+ * Created by shushanfx on 2017/6/13.
  */
 public class ZConnection {
     private String id = null;

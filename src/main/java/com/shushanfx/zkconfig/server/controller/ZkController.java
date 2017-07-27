@@ -1,8 +1,8 @@
 package com.shushanfx.zkconfig.server.controller;
 
 import com.shushanfx.zkconfig.server.bean.ResultInfo;
-import com.shushanfx.zkconfig.server.zookeeper.ZNode;
-import com.shushanfx.zkconfig.server.zookeeper.ZNodeClient;
+import com.shushanfx.zkconfig.server.zookeeper.ZConfig;
+import com.shushanfx.zkconfig.server.zookeeper.ZKConfigClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +13,17 @@ import java.util.List;
 /**
  * Created by shushanfx on 17/六月/11.
  */
-@RequestMapping("/znode")
+@RequestMapping("/zconfig")
 @Controller
 public class ZkController {
     @Autowired
-    private ZNodeClient client = null;
+    private ZKConfigClient client = null;
 
     @ResponseBody
     @RequestMapping("/list")
-    public ResultInfo<List<ZNode>> list(String name){
-        ResultInfo<List<ZNode>> resultInfo = ResultInfo.newSuccess();
-        resultInfo.setData(client.getList(name));
+    public ResultInfo<List<ZConfig>> list(String name){
+        ResultInfo<List<ZConfig>> resultInfo = ResultInfo.newSuccess();
+        resultInfo.setData(client.getZConfigList(name));
         return resultInfo;
     }
 
@@ -53,29 +53,29 @@ public class ZkController {
     @RequestMapping("/edit/info")
     public String editInfo(Model model){
         model.addAttribute("edit", "add");
-        return "znode/edit";
+        return "zconfig/edit";
     }
 
     @RequestMapping("/edit/info/{name}")
     public String editInfo(@PathVariable String name, Model model){
-        ZNode node = client.getInfo(name);
+        ZConfig node = client.getInfo(name);
         model.addAttribute("edit", "edit");
         model.addAttribute("node", node);
         model.addAttribute("name", name);
-        return "znode/edit";
+        return "zconfig/edit";
     }
 
     @RequestMapping("/edit/content/{name}")
     public String editContent(@PathVariable String name, Model model){
-        ZNode node = client.getContent(name);
+        ZConfig node = client.getContent(name);
         model.addAttribute("node", node);
         model.addAttribute("name", name);
-        return "znode/content";
+        return "zconfig/content";
     }
 
     @RequestMapping("/index")
     public String index(String name, Model model){
         model.addAttribute("name", name);
-        return "znode/index";
+        return "zconfig/index";
     }
 }

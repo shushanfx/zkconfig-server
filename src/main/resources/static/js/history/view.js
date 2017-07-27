@@ -59,7 +59,7 @@ $(function () {
         var name = $.trim($("#txtName").val());
         var content = codeMirrorMerge.edit.getValue();
         if (check(name, content)) {
-            $.post(zkconfig.getPath("/znode/save/content"), {
+            $.post(zkconfig.getPath("/zconfig/save/content"), {
                 name: name,
                 content: content
             }, function (result) {

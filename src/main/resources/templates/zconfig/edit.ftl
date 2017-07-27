@@ -46,6 +46,6 @@
     </form>
 </div>
 <#include "../include/footer.ftl" />
-<script src="${base}/js/znode/edit.js"></script>
+<script src="${base}/js/zconfig/edit.js"></script>
 </body>
 </html>

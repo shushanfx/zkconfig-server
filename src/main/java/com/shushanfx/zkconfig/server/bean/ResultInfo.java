@@ -1,7 +1,7 @@
 package com.shushanfx.zkconfig.server.bean;
 
 /**
- * Result Info for body.
+ * Result Info for response body.
  * Created by shushanfx on 17/六月/11.
  */
 public class ResultInfo<T extends Object> {

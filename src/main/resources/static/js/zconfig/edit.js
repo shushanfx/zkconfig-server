@@ -38,7 +38,7 @@ $(function(){
         var description = $("#txtDescription").val();
         var isAdd = $("#btnSubmit").attr("data-edit") === "add";
         if(check(name, description)){
-            $.post(zkconfig.getPath("/znode/save/info"), {
+            $.post(zkconfig.getPath("/zconfig/save/info"), {
                 name: name,
                 description: description,
                 type: $("#sltType").val()

@@ -49,7 +49,7 @@ $(function () {
         var name = $.trim($("#txtName").val());
         var content = $("#txtContent").val();
         if (check(name, content)) {
-            $.post(zkconfig.getPath("/znode/save/content"), {
+            $.post(zkconfig.getPath("/zconfig/save/content"), {
                 name: name,
                 content: content
             }, function (result) {

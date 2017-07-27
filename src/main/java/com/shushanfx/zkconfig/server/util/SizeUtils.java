@@ -1,7 +1,7 @@
 package com.shushanfx.zkconfig.server.util;
 
 /**
- * Created by dengjianxin on 2017/7/17.
+ * Created by shushanfx on 2017/7/17.
  */
 public class SizeUtils {
     public static final String getSizeString(int size){

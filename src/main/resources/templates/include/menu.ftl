@@ -11,7 +11,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="${base}/znode/index">配置管理</a></li>
+                <li><a href="${base}/zconfig/index">配置管理</a></li>
                 <li><a href="${base}/connection/index">连接管理</a></li>
                 <li><a href="${base}/index">关于</a></li>
             </ul>

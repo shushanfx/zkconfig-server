@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by shushanfx on 17/六月/24.
  */
-public class ZNodeSerializer implements ZkSerializer {
+public class ZKConfigSerializer implements ZkSerializer {
 
     @Override
     public byte[] serialize(Object data) throws ZkMarshallingError {

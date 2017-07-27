@@ -23,9 +23,9 @@ import java.util.UUID;
  */
 @Service
 @ConfigurationProperties(prefix = "zookeeper")
-public class ZNodeClient {
+public class ZKConfigClient {
     public static final String HISTORY_PATH = "_history";
-    private static final Log log = LogFactory.getLog(ZNodeClient.class);
+    private static final Log log = LogFactory.getLog(ZKConfigClient.class);
 
     @Autowired
     private ZkConfiguration zkConfiguration = null;
@@ -44,7 +44,7 @@ public class ZNodeClient {
     public void init() {
         log.info(String.format("Init zookeeper server %s, timeout -> %d, path -> %s", servers, connectTimeout, path));
         client = new ZkClient(servers, connectTimeout);
-        client.setZkSerializer(new ZNodeSerializer());
+        client.setZkSerializer(new ZKConfigSerializer());
         if (username != null) {
             log.info(String.format("Auth zookeeper with %s:%s", username, password));
             client.addAuthInfo(scheme, (username + ":" + password).getBytes());
@@ -57,8 +57,8 @@ public class ZNodeClient {
         }
     }
 
-    public List<ZNode> getList(String name) {
-        List<ZNode> list = new ArrayList<>();
+    public List<ZConfig> getZConfigList(String name) {
+        List<ZConfig> list = new ArrayList<>();
         List<String> children = client.getChildren(this.path);
         String filter = StringUtils.isEmpty(name) ? null : name;
 
@@ -67,7 +67,7 @@ public class ZNodeClient {
                 if (filter != null && !item.contains(filter)) {
                     continue;
                 }
-                ZNode node = getZNode(item, false);
+                ZConfig node = getZConfig(item, false);
                 if (node != null) {
                     list.add(node);
                 }
@@ -89,7 +89,7 @@ public class ZNodeClient {
         return list;
     }
 
-    public List<ZConnection> getConnectionList(String path, String ip) {
+    public List<ZConnection> getZConnectionList(String path, String ip) {
         List<ZConnection> connections = new ArrayList<>();
         if (connectionPath != null && client.exists(connectionPath)) {
             List<String> items = client.getChildren(connectionPath);
@@ -107,7 +107,7 @@ public class ZNodeClient {
         return connections;
     }
 
-    public int sortAlphabet(String str1, String str2) {
+    private int sortAlphabet(String str1, String str2) {
         int maxValue = Math.max(str1.length(), str2.length());
         for (int i = 0; i < maxValue; i++) {
             int ret = sortAlphabet(str1, str2, i);
@@ -143,15 +143,15 @@ public class ZNodeClient {
         return path;
     }
 
-    private ZNode getZNode(String name, boolean checkExist) {
+    private ZConfig getZConfig(String name, boolean checkExist) {
         Assert.notNull(name, "name can not be null!");
-        ZNode node = null;
+        ZConfig node = null;
         String newPath = join(path, name);
         if (checkExist && !client.exists(newPath)) {
             return node;
         }
 
-        node = new ZNode();
+        node = new ZConfig();
         node.setName(name);
 
         Stat stat = new Stat();
@@ -193,13 +193,13 @@ public class ZNodeClient {
         return node;
     }
 
-    public ZNode getContent(String name) {
+    public ZConfig getContent(String name) {
         Assert.notNull(name, "name can not be null!");
         String newPath = join(this.path, name);
-        ZNode node = null;
+        ZConfig node = null;
         if (client.exists(newPath)) {
             String content = client.readData(newPath);
-            node = new ZNode();
+            node = new ZConfig();
             node.setName(name);
             node.setContent(content);
             String type = client.readData(join(newPath, "type"), true);
@@ -211,8 +211,8 @@ public class ZNodeClient {
         return node;
     }
 
-    public ZNode getInfo(String name) {
-        return getZNode(name, true);
+    public ZConfig getInfo(String name) {
+        return getZConfig(name, true);
     }
 
     public boolean saveInfo(String name, String description,
@@ -282,7 +282,7 @@ public class ZNodeClient {
         return true;
     }
 
-    public List<ZHistory> listHistory(String name) {
+    public List<ZHistory> getHistoryList(String name) {
         List<ZHistory> list = new ArrayList<>();
         String newPath = join(this.path, name, HISTORY_PATH);
 
@@ -296,8 +296,6 @@ public class ZNodeClient {
             }
             list.sort((a, b) -> (int) (b.getCreatedTime() - a.getCreatedTime()));
         }
-
-
         return list;
     }
 

@@ -48,6 +48,6 @@
     </div>
 </div>
 <#include "../include/footer.ftl" />
-<script src="${base}/js/znode/index.js"></script>
+<script src="${base}/js/zconfig/index.js"></script>
 </body>
 </html>

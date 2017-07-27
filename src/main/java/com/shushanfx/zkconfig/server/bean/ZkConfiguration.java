@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * ZK的配置信息
- * Created by dengjianxin on 2017/7/19.
+ * Created by shushanfx on 2017/7/19.
  */
 @Repository
 @ConfigurationProperties(prefix = "zkconfig")

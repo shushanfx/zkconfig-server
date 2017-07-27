@@ -1,7 +1,7 @@
 package com.shushanfx.zkconfig.server.controller;
 
 import com.shushanfx.zkconfig.server.bean.ResultInfo;
-import com.shushanfx.zkconfig.server.zookeeper.ZNodeClient;
+import com.shushanfx.zkconfig.server.zookeeper.ZKConfigClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
- * Created by dengjianxin on 2017/7/17.
+ * Created by shushanfx on 2017/7/17.
  */
-@RequestMapping("/znode/history")
+@RequestMapping("/zconfig/history")
 @Controller
 public class ZkHistoryController {
     @Autowired
-    private ZNodeClient client = null;
+    private ZKConfigClient client = null;
 
     @RequestMapping("/{name}")
     public String history(@PathVariable String name, Model model){
@@ -29,7 +29,7 @@ public class ZkHistoryController {
     public ResultInfo list(@PathVariable String name){
         ResultInfo info = ResultInfo.newSuccess();
         try{
-            info.setData(client.listHistory(name));
+            info.setData(client.getHistoryList(name));
         } catch (Exception e){
             e.printStackTrace();
             info = ResultInfo.newFailure();
