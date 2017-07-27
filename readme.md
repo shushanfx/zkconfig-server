@@ -34,14 +34,14 @@ spring:
     request-context-attribute: request
 ```
 
+## Wiki
+Please refer to [Wiki](https://github.com/shushanfx/zkconfig-server/wiki)
+
 ## Get it
 ```bash
 git clone https://github.com/shushanfx/zkconfig-server.git
 ```
 Then you can run the server with command `mvn clean spring-boot:run`, view with url [http://localhost:8080](http://localhost:8080)
-
-## TODO
-* Add history for former edit.
 
 ## LICENCE
 MIT
