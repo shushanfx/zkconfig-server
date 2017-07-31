@@ -24,6 +24,21 @@ zookeeper:
   scheme: digest
   username: zkconfig
   password: zkconfig
+zkconfig:
+  # type of config format.
+  typeList:
+    - properties
+    - json
+    - yaml
+  # default value for different config format.
+  contentDefault:
+    properties: "#java properties format, such as:\n#key=value"
+    json: "{\n\t\"key\":\"value\"\n}"
+    yaml: "# yaml format config, such as: \n#root:\n#  key: value"
+  # admin user name.
+  adminUserName: shushanfx
+  # admin user email, only one email can be recognized.
+  adminEmail: shushanfx@gmail.com
 # default config.
 spring:
   freemarker:
@@ -33,6 +48,11 @@ spring:
       datetimeFormat: yyyy-MM-dd HH:mm:ss
     request-context-attribute: request
 ```
+
+## Client
+There are two clients:
+* [zkconfig-client](https://github.com/shushanfx/zkconfig-client): a client based on java.
+* [zkconfig-client-node](https://github.com/shushanfx/zkconfig-client-node): a client based on NodeJS.
 
 ## Wiki
 Please refer to [Wiki](https://github.com/shushanfx/zkconfig-server/wiki)
