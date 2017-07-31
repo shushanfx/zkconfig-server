@@ -13,10 +13,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by shushanfx on 17/六月/11.
@@ -240,7 +237,7 @@ public class ZKConfigClient {
         if (client.exists(newPath)) {
             String oldContent = client.readData(newPath, true);
             if (oldContent != null && content != null) {
-                if(!oldContent.equals(content)){
+                if (!oldContent.equals(content)) {
                     // 变化才保存，并保留就的历史记录
                     client.writeData(newPath, content);
                     saveOrUpdate(join(newPath, "modifier"), username);
@@ -398,5 +395,31 @@ public class ZKConfigClient {
 
     public void setScheme(String scheme) {
         this.scheme = scheme;
+    }
+
+    public Map<String, Object> getConfigInfo() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("servers", servers.split(","));
+        map.put("path", path);
+
+        int length = 0;
+        Stat stat = new Stat();
+        client.readData(this.path, stat);
+        if (stat != null) {
+            length = stat.getNumChildren();
+        }
+        map.put("pathChildrenLength", length);
+        map.put("connectionPath", this.connectionPath);
+
+        length = 0;
+        if (this.connectionPath != null) {
+            client.readData(this.connectionPath, stat);
+            if(stat!=null){
+                length = stat.getNumChildren();
+            }
+        }
+        map.put("connectionPathChildrenLength", length);
+        map.put("zkconfig", this.zkConfiguration);
+        return map;
     }
 }

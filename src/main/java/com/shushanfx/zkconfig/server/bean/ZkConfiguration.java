@@ -17,6 +17,9 @@ import java.util.Map;
 public class ZkConfiguration {
     private List<String> typeList = null;
     private Map<String, String> contentDefault = null;
+    private String adminUserName = null;
+    private String adminEmail = null;
+
 
     public ZkConfiguration() {
         typeList = new ArrayList<>();
@@ -47,5 +50,21 @@ public class ZkConfiguration {
             }
         }
         return "";
+    }
+
+    public String getAdminUserName() {
+        return adminUserName;
+    }
+
+    public void setAdminUserName(String adminUserName) {
+        this.adminUserName = adminUserName;
+    }
+
+    public String getAdminEmail() {
+        return adminEmail;
+    }
+
+    public void setAdminEmail(String adminEmail) {
+        this.adminEmail = adminEmail;
     }
 }
