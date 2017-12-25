@@ -43,6 +43,22 @@ public class ZkController {
         return ResultInfo.newSuccess();
     }
 
+    @RequestMapping("/get/content")
+    @ResponseBody
+    public ResultInfo<ZConfig> getContent(String name) {
+        ZConfig config = client.getContent(name);
+        ResultInfo<ZConfig> ret = null;
+        if(config != null){
+            ret = ResultInfo.newSuccess();
+            ret.setData(config);
+        }
+        else{
+            ret = ResultInfo.newFailure();
+            ret.setMessage("Can not found config.");
+        }
+        return ret;
+    }
+
     @RequestMapping("/delete/{name}")
     @ResponseBody
     public ResultInfo delete(@PathVariable String name){
