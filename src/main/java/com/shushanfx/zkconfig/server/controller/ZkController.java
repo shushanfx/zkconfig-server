@@ -43,6 +43,12 @@ public class ZkController {
         return ResultInfo.newSuccess();
     }
 
+    @RequestMapping("/get/content/{name}")
+    @ResponseBody
+    public ResultInfo<ZConfig> getContent1(@PathVariable String name) {
+        return getContent(name);
+    }
+
     @RequestMapping("/get/content")
     @ResponseBody
     public ResultInfo<ZConfig> getContent(String name) {

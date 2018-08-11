@@ -57,6 +57,7 @@ $(function(){
 
             arr.push('<a class="btn btn-primary btn-sm my-btn" href="edit/info/', item.name, '">编辑</a>');
             arr.push('<a class="btn btn-primary btn-sm my-btn" href="edit/content/', item.name, '">编辑内容</a>');
+            arr.push('<a class="btn btn-primary btn-sm my-btn" href="get/content/', item.name, '">查看内容</a>');
             arr.push('<a class="btn btn-primary btn-sm my-btn" href="history/', item.name, '">版本</a>');
             arr.push('<a class="btn btn-danger btn-sm my-btn delete" target="_blank" href="delete/', item.name, '">删除</a>')
 
